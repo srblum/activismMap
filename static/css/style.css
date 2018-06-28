@@ -1,0 +1,218 @@
+#d3-container{
+	position:relative;
+	width:1000px;
+	height:800px;
+	padding:0px;
+}
+	#age-div{
+		left:15%;
+	}
+	#interest-div{
+		right:15%;
+	}
+	.button-div{
+		position:absolute;
+		height:50px;
+		top:0px;
+		margin:0px;
+		padding:0px;
+	}
+		.button-div button{
+			margin: 0px;
+			display: inline-block;
+			box-shadow: 0 1px 1px 0 rgba(0,0,0,0.25);
+			color: #FFFFFF;
+			padding: 6px 20px 6px;
+			border-radius: 2px;
+			background: rgb(66, 146, 198);
+			font-size:18px;
+			font-weight:600;
+			opacity:0.9;
+		}
+		.button-div button.selected{
+			background-color:orange;
+			opacity:0.95;
+		}
+		.button-div p{
+			text-align:center;
+			font-size:20px;
+			margin:5px;
+		}
+	#color-legend{
+		position:absolute;
+		top:58%;
+		left:5%;
+		width:20px;
+		height:25%;
+		background:linear-gradient(rgb(8,48,107), white);
+		border:1px solid black;
+		opacity:0.8;
+	}
+	#variable-select{
+		position:absolute;
+		left:5%;
+		top:84%;
+	}
+
+	#chart-container{
+		position:relative;
+		height:150px;
+		left:230px;
+	}
+
+		#chart-container #column-info{
+			position:absolute;
+			top:-50px;
+			left:0px;
+			width:100%;
+			text-align:center;
+			font-size:20px;
+			font-weight:bold;
+			color:grey;
+			opacity:0.95;
+		}
+		#column-info span{
+			font-size: 16px;
+		}
+		#chart-container .column-container{
+			display:inline-block;
+			width:auto;
+			height:110px;
+			position:relative;
+		}
+			#chart-container .column-container .column-div{
+				position:absolute;
+				width:25px;
+				height:0px;
+				border:1px solid black;
+				bottom:30px;
+				left:10px;
+				opacity:0.8;
+				background-color:lightslategrey;
+			}
+			#chart-container .column-container .column-label{
+				font-size:12px;
+				padding:0px;
+				margin:0px;
+				position:absolute;
+				color:grey;
+				top:80px;
+				width:50px;
+				text-align:center;
+				line-height:12px;
+			}
+		#chart-container .heading-label{
+			color:grey;
+			font-size:16px;
+			position:absolute;
+			font-weight:bold;
+		}
+		#type-label{
+			left:41%;
+			bottom:18px;
+		}
+		#participation-label{
+			left:61%;
+			bottom:8px;
+		}
+
+		#satisfaction-container{
+			left:20%;
+		}
+
+		#voice-container{
+			left:30.5%;
+		}
+
+		#demo-container{
+			left:40.5%;
+		}
+		#other-container{
+			left:44.5%;
+		}
+
+		#campaign-container{
+			left:56%;
+		}
+		#party-container{
+			left:60%;
+		}
+		#protest-container{
+			left:64%;
+		}
+		#boycott-container{
+			left:68%;
+		}
+
+#d3-container svg path.selected{
+	stroke-width:1 !important;
+}
+
+.names {
+fill: none;
+stroke: #fff;
+stroke-linejoin: round;
+}
+
+/* Tooltip CSS */
+.d3-tip {
+line-height: 1.5;
+font-weight: 400;
+font-family:"avenir next", Arial, sans-serif;
+padding: 6px;
+background: rgba(0, 0, 0, 0.6);
+color: #FFA500;
+border-radius: 1px;
+pointer-events: none;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+box-sizing: border-box;
+display: inline;
+font-size: 8px;
+width: 100%;
+line-height: 1.5;
+color: rgba(0, 0, 0, 0.6);
+position: absolute;
+pointer-events: none;
+
+}
+
+/* Northward tooltips */
+.d3-tip.n:after {
+content: "\25BC";
+margin: -1px 0 0 0;
+top: 100%;
+left: 0;
+text-align: center;
+}
+
+/* Eastward tooltips */
+.d3-tip.e:after {
+content: "\25C0";
+margin: -4px 0 0 0;
+top: 50%;
+left: -8px;
+}
+
+/* Southward tooltips */
+.d3-tip.s:after {
+content: "\25B2";
+margin: 0 0 1px 0;
+top: -8px;
+left: 0;
+text-align: center;
+}
+
+/* Westward tooltips */
+.d3-tip.w:after {
+content: "\25B6";
+margin: -4px 0 0 -1px;
+top: 50%;
+left: 100%;
+}
+
+.details{
+color:white;
+}

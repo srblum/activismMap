@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="static/css/style.css">
+</head>
+
+<body>
+	<div id="d3-container">
+		<div id="age-div" class="button-div">
+			<p id="age-label" class="column-label">How old are you?</p>
+			<button name=0>&lt;29</button>
+			<button name=1>29-38</button>
+			<button name=2>&gt;38</button>
+		</div>
+		<div id="interest-div" class="button-div">
+			<p id="interest-label" class="column-label">How interested are you in politics?</p>
+			<button name=0>Low</button>
+			<button name=1>Medium</button>
+			<button name=2>High</button>
+		</div>
+		<select id="variable-select">
+			<option value="satisfaction">satisfaction</option>
+			<option value="voice">voice</option>
+			<option value="democracy">democracy</option>
+			<option value="other">prefers other</option>
+			<option value="protest">protest</option>
+			<option value="party">party</option>
+			<option value="campaign">campaign</option>
+			<option value="boycott">boycott</option>
+		</select>
+		<div id="color-legend"></div>
+		<svg></svg>
+		<div id="chart-container">
+			<p id="column-info"></p>
+			<div class="column-container" id="satisfaction-container">
+				<div id="satisfaction-column" class="column-div"></div>
+				<p id="satisfaction-label" class="column-label"> Satisfaction</p>
+			</div>
+			<div class="column-container" id="voice-container">
+				<div id="voice-column" class="column-div"></div>
+				<p id="voice-label" class="column-label"> Voice</p>
+			</div>
+			<p id="type-label" class="heading-label">Gov. preferred</p>
+			<div class="column-container" id="demo-container">
+				<div id="demo-column" class="column-div"></div>
+				<p id="demo-label" class="column-label">Democracy</p>
+			</div>
+			<div class="column-container" id="other-container">
+				<div id="other-column" class="column-div"></div>
+				<p id="other-label" class="column-label">Other</p>
+			</div>
+			<p id="participation-label" class="heading-label">I would like to...</p>
+			<div class="column-container" id="campaign-container">
+				<div id="campaign-column" class="column-div"></div>
+				<p id="campaign-label" class="column-label">Campaign</p>
+			</div>
+			<div class="column-container" id="protest-container">
+				<div id="protest-column" class="column-div"></div>
+				<p id="protest-label" class="column-label">Protest</p>
+			</div>
+			<div class="column-container" id="party-container">
+				<div id="party-column" class="column-div"></div>
+				<p id="party-label" class="column-label">Work with party</p>
+			</div>
+			<div class="column-container" id="boycott-container">
+				<div id="boycott-column" class="column-div"></div>
+				<p id="boycott-label" class="column-label">Boycott</p>
+			</div>
+		</div>
+	</div>
+	
+	<script src="http://d3js.org/d3.v4.min.js"></script>
+	<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+	<script src="http://d3js.org/queue.v1.min.js"></script>
+	<script src="http://d3js.org/topojson.v1.min.js"></script>
+	<script src="d3-tip.js"></script>
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="static/js/main.js"></script>
+</body>
+</html>
