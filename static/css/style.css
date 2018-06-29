@@ -38,16 +38,7 @@
 			font-size:20px;
 			margin:5px;
 		}
-	#color-legend{
-		position:absolute;
-		top:58%;
-		left:5%;
-		width:20px;
-		height:25%;
-		background:linear-gradient(rgb(8,48,107), white);
-		border:1px solid black;
-		opacity:0.8;
-	}
+	
 	#variable-select{
 		position:absolute;
 		left:5%;
@@ -56,8 +47,10 @@
 
 	#chart-container{
 		position:relative;
-		height:150px;
+		height:220px;
 		left:230px;
+		top:-70px;
+		width:1000px;
 	}
 
 		#chart-container #column-info{
@@ -74,11 +67,49 @@
 		#column-info span{
 			font-size: 16px;
 		}
+		#x-axis{
+			position:absolute;
+			width:55%;
+			left:20%;
+			height:1px;
+			border-bottom:1px solid grey;
+			bottom:70px;
+		}
+		#color-legend{
+			position:absolute;
+			bottom:70px;
+			left:19%;
+			width:8px;
+			height:150px;
+			opacity:0.8;
+			border-right:1px solid black;
+		}
+			#color-legend div{
+				margin:0px;
+				padding:0px;
+				height:15px;
+				width:8px;
+			}
+		#top-axis-label{
+			position:absolute;
+			bottom:195px;
+			font-size:10px;
+			opacity:0.7;
+			left:17%;
+		}
+		#bottom-axis-label{
+			position:absolute;
+			bottom:58px;
+			font-size:10px;
+			opacity:0.7;
+			left:18%;
+		}
 		#chart-container .column-container{
 			display:inline-block;
 			width:auto;
 			height:110px;
 			position:relative;
+			top:70px;
 		}
 			#chart-container .column-container .column-div{
 				position:absolute;
@@ -89,6 +120,7 @@
 				left:10px;
 				opacity:0.8;
 				background-color:lightslategrey;
+				border-bottom:none;
 			}
 			#chart-container .column-container .column-label{
 				font-size:12px;
@@ -101,19 +133,24 @@
 				text-align:center;
 				line-height:12px;
 			}
+				#chart-container .column-container.selected .column-label{
+					color:orange;
+					font-weight:bold;
+				}
+
 		#chart-container .heading-label{
 			color:grey;
-			font-size:16px;
+			font-size:12px;
 			position:absolute;
 			font-weight:bold;
 		}
 		#type-label{
-			left:41%;
-			bottom:18px;
+			left:42%;
+			bottom:26px;
 		}
 		#participation-label{
-			left:61%;
-			bottom:8px;
+			left:62%;
+			bottom:26px;
 		}
 
 		#satisfaction-container{

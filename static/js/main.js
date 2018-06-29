@@ -1,17 +1,9 @@
-var ageIndex = 0, 
-	interestIndex = 0, 
+var ageIndex, 
+	interestIndex,
 	selectedCountry = "Canada", 
 	selectedVariable = "satisfaction";
 
 var format = d3.format(",");
-
-// Set tooltips
-var tip = d3.tip()
-		.attr('class', 'd3-tip')
-		.offset([-10, 0])
-		.html(function(d) {
-			return "<strong>Country: </strong><span class='details'>" + d.properties.NAME_SORT + "<br></span>" + "<strong>Population: </strong><span class='details'>" + format(d.population) +"</span>";
-		})
 
 var margin = {top: 0, right: 0, bottom: 0, left: 0},
 		width = 1200 - margin.left - margin.right,
@@ -32,8 +24,6 @@ var projection = d3.geoNaturalEarth1()
 
 var path = d3.geoPath().projection(projection);
 
-svg.call(tip);
-
 queue()
 .defer(d3.json, "world_countries.json")
 .defer(d3.tsv, "world_population.tsv")
@@ -48,9 +38,11 @@ var countryNameTranslations = {
 	"Swaziland":"eSwatini"
 } 
 
+var dataByCountry = {};
+
 function ready(error, world, population, data) {
 	var populationById = {};
-	var dataByCountry = {};
+	
 
 	population.forEach(function(d) { populationById[d.id] = +d.population; });
 	world.features.forEach(function(d) { d.population = populationById[d.properties.ADM0_A3] });
@@ -101,9 +93,10 @@ function ready(error, world, population, data) {
 
 
 	var color = d3.scaleThreshold()
-	    .domain(d3.range(2, 10))
-	    .range(d3.schemeBlues[9]);
+	    .domain(d3.range(1, 10))
+	    .range(["#f9fbff","#f1f3ff"].concat(d3.schemeBlues[9].slice(1)));
 
+	//Create countries on map
 	var countries = svg.append("g")
 		.attr("class", "countries")
 	.selectAll("path")
@@ -111,6 +104,7 @@ function ready(error, world, population, data) {
 	.enter().append("path")
 		.attr("d", path)
 		.style("fill", getCountryColor)
+		.classed("selected",d => d.properties.NAME_SORT==="Canada" ? true : false)
 		.style('stroke', 'black')
 		.style('stroke-width', 1)
 		.style("opacity",0.8)
@@ -121,82 +115,160 @@ function ready(error, world, population, data) {
 		.on('mouseout', function(d){
 			tip.hide(d);
 		})
-		.on('click',function(d){
-			selectedCountry = d.properties.NAME_SORT;
-			$("#d3-container path").removeClass("selected");
-			$(this).addClass("selected");
-			updateColumns();
-			updateInfo();
+		.on('click',function(d){  //Update columns when country is clicked
+			if(dataByCountry.hasOwnProperty(d.properties.NAME_SORT)){
+				selectedCountry = d.properties.NAME_SORT;
+				$("#d3-container path").removeClass("selected");
+				$(this).addClass("selected");
+				updateColumns();
+				updateInfo();
+			}
 		})
 
-	$(".button-div button[name='0']").addClass("selected")
+	d3.select("#color-legend").selectAll("div")
+	  .data(color.range().reverse())
+	  .enter().append("div")
+	    .style("background-color", d => d);
+
 
 	//When an age or interest button is clicked, update the column charts and map colors
 	$("#interest-div button").on("click",function(){
-		$("#interest-div button").removeClass("selected");
-		$(this).addClass("selected")
-		interestIndex = +$(this).attr("name");
+		if($(this).hasClass('selected')){
+			$("#interest-div button").removeClass("selected");
+			interestIndex = undefined;
+		}else{
+			$("#interest-div button").removeClass("selected");
+			$(this).addClass("selected");
+			interestIndex = +$(this).attr("name");
+		}
 		updateColumns();
 		updateInfo();
 		countries.transition().duration(500).style("fill",getCountryColor);
 	})
 	$("#age-div button").on("click",function(){
-		$("#age-div button").removeClass("selected");
-		$(this).addClass("selected");
-		ageIndex = +$(this).attr("name");
+		if($(this).hasClass('selected')){
+			$("#age-div button").removeClass("selected");
+			ageIndex = undefined;
+		}else{
+			$("#age-div button").removeClass("selected");
+			$(this).addClass("selected");
+			ageIndex = +$(this).attr("name");
+		}
 		updateColumns();
 		updateInfo();
 		countries.transition().duration(500).style("fill",getCountryColor);
 	})
 
 	//When a new variable is selected, update the map colors
-	$("#variable-select").on("change",function(){
-		selectedVariable = $(this).val();
+	$(".column-container").on("click",function(){
+		selectedVariable = $(this).attr('name');
+		$(".column-container").removeClass("selected");
+		$(this).addClass("selected");
+		updateColumns();
 		countries.transition().duration(500).style("fill",getCountryColor);
 	})
 
 	function getCountryColor(d){		
 		var country = d.properties.NAME_SORT;
 		if(dataByCountry.hasOwnProperty(country)){
-			var value = dataByCountry[country][ageIndex][interestIndex][selectedVariable];
+			var cell = getCell(country);
+			var value = cell[selectedVariable];
 			return color(value);
 		}else{
-			return 'black';
+			return 'white';
 		}
 	}
 
 	//Update columns based on data from selected country, age, and interest
 	function updateColumns(){
-		//TODO: inform user when country not present in data (and indicate visually on map?)
-		var cell = dataByCountry[selectedCountry][ageIndex][interestIndex];
+		var cell = getCell();
 		//Update all columns
-		updateColumn(d3.select("#satisfaction-column"),cell["satisfaction"]);
-		updateColumn(d3.select("#voice-column"),cell["voice"]);
-		updateColumn(d3.select("#demo-column"),cell["democracy"]);
-		updateColumn(d3.select("#other-column"),cell["other"]);
-		updateColumn(d3.select("#protest-column"),cell["protest"]);
-		updateColumn(d3.select("#boycott-column"),cell["boycott"]);
-		updateColumn(d3.select("#party-column"),cell["party"]);
-		updateColumn(d3.select("#campaign-column"),cell["campaign"]);
-		//Update the chart title
+		updateColumn(d3.select("#satisfaction-container"),cell["satisfaction"]);
+		updateColumn(d3.select("#voice-container"),cell["voice"]);
+		updateColumn(d3.select("#demo-container"),cell["democracy"]);
+		updateColumn(d3.select("#other-container"),cell["other"]);
+		updateColumn(d3.select("#protest-container"),cell["protest"]);
+		updateColumn(d3.select("#boycott-container"),cell["boycott"]);
+		updateColumn(d3.select("#party-container"),cell["party"]);
+		updateColumn(d3.select("#campaign-container"),cell["campaign"]);
 	}
 
-	var scaleY = d3.scaleLinear().domain([1,10]).range([8,80]);
+	var scaleY = d3.scaleLinear().domain([1,10]).range([15,150]);
 
 	// animate a column to the appropriate value
-	function updateColumn(column, value){
-		column.transition()
+	function updateColumn(container, value){
+		container.select(".column-div").transition()
 				.duration(500)
 				.style("height",scaleY(value)+"px")
-				.style("background-color",color(value));
+				.style("background-color",container.classed('selected') ? "orange" : color(value));
 	}
 
 	function updateInfo(){
-		$("#column-info").html(`${selectedCountry} <span>(ages \
-			${ageIndex==0 ? "<29" : ageIndex==1 ? "29-38" : ">38"}, \
-			${interestIndex==0 ? "low" : interestIndex==1 ? "medium" : "high"} political interest)</span>`);
+		$("#column-info").html(`${selectedCountry} <span>${ageIndex!==undefined || interestIndex!==undefined ? "(" : ""}${ageIndex!==undefined ? "age ":""} \
+			${ageIndex==0 ? "<29" : ageIndex==1 ? "29-38" : ageIndex==2 ? ">38" : ""}${interestIndex!==undefined && ageIndex!==undefined ? ", " : ""}\
+			${interestIndex==0 ? "low" : interestIndex==1 ? "medium" : interestIndex==2 ? "high" : ""}${interestIndex!==undefined ? " political interest":""}\
+			${ageIndex!==undefined || interestIndex!==undefined ? ")" : ""}</span>`);
 	}
+
+	function getCell(country){
+		var cells,
+			empty = {
+				"satisfaction":0,
+				"voice":0,
+				"democracy":0,
+				"other":0,
+				"protest":0,
+				"party":0,
+				"campaign":0,
+				"boycott":0
+			};
+		if(country===undefined){
+			var country = selectedCountry;
+		}
+
+		//If no age/interest is selected, then create a new cell by averaging together values from the appropriate cells
+		if(ageIndex===undefined && interestIndex===undefined){
+			cells = dataByCountry[country].reduce(function(a,b){return a.concat(b)},[]);
+		}else if(ageIndex===undefined){
+			cells = dataByCountry[country].reduce(function(a,b){return a.concat(b[interestIndex])},[]);
+		}else if(interestIndex===undefined){
+			cells = dataByCountry[country][ageIndex];
+		}else{
+			cells = [dataByCountry[country][ageIndex][interestIndex]];
+		}
+		var cell = cells.reduce(function(a,b){
+			var sum = {};
+			for(prop in a){
+				if(a.hasOwnProperty(prop)){
+					sum[prop] = a[prop] + b[prop];
+				}
+			}
+			return sum;
+		},empty);
+		for(prop in cell){
+			if(cell.hasOwnProperty(prop)){
+				cell[prop] /= cells.length;
+			}
+		}
+		return cell;
+	}
+
+	// Set tooltips
+	var tip = d3.tip()
+			.attr('class', 'd3-tip')
+			.offset([-10, 0])
+			.html(function(d) {
+				var f = d3.format(".1f");
+				var country = d.properties.NAME_SORT;
+				var value = getCell(country)[selectedVariable]
+				return "<strong>Country: </strong><span class='details'>" + country + "<br></span>"
+				 + "<strong>"+selectedVariable[0].toUpperCase()+selectedVariable.slice(1)+
+				 ": </strong><span class='details'>" + (dataByCountry.hasOwnProperty(country) 
+				 	? (value % 1 === 0 ? value : f(value)) : 
+				 	"not surveyed") +"</span>";
+			})
 
 	updateColumns();
 	updateInfo();
+	svg.call(tip);
 }

@@ -18,54 +18,47 @@
 			<button name=1>Medium</button>
 			<button name=2>High</button>
 		</div>
-		<select id="variable-select">
-			<option value="satisfaction">satisfaction</option>
-			<option value="voice">voice</option>
-			<option value="democracy">democracy</option>
-			<option value="other">prefers other</option>
-			<option value="protest">protest</option>
-			<option value="party">party</option>
-			<option value="campaign">campaign</option>
-			<option value="boycott">boycott</option>
-		</select>
-		<div id="color-legend"></div>
 		<svg></svg>
 		<div id="chart-container">
 			<p id="column-info"></p>
-			<div class="column-container" id="satisfaction-container">
+			<div class="column-container selected" id="satisfaction-container" name="satisfaction">
 				<div id="satisfaction-column" class="column-div"></div>
-				<p id="satisfaction-label" class="column-label"> Satisfaction</p>
+				<p id="satisfaction-label" class="column-label"> satisfaction</p>
 			</div>
-			<div class="column-container" id="voice-container">
+			<div class="column-container" id="voice-container" name="voice">
 				<div id="voice-column" class="column-div"></div>
-				<p id="voice-label" class="column-label"> Voice</p>
+				<p id="voice-label" class="column-label"> voice</p>
 			</div>
-			<p id="type-label" class="heading-label">Gov. preferred</p>
-			<div class="column-container" id="demo-container">
+			<p id="type-label" class="heading-label">gov. preferred</p>
+			<div class="column-container" id="demo-container" name="democracy">
 				<div id="demo-column" class="column-div"></div>
-				<p id="demo-label" class="column-label">Democracy</p>
+				<p id="demo-label" class="column-label">democracy</p>
 			</div>
-			<div class="column-container" id="other-container">
+			<div class="column-container" id="other-container" name="other">
 				<div id="other-column" class="column-div"></div>
-				<p id="other-label" class="column-label">Other</p>
+				<p id="other-label" class="column-label">other</p>
 			</div>
 			<p id="participation-label" class="heading-label">I would like to...</p>
-			<div class="column-container" id="campaign-container">
+			<div class="column-container" id="campaign-container" name="campaign">
 				<div id="campaign-column" class="column-div"></div>
-				<p id="campaign-label" class="column-label">Campaign</p>
+				<p id="campaign-label" class="column-label">campaign</p>
 			</div>
-			<div class="column-container" id="protest-container">
+			<div class="column-container" id="protest-container" name="protest">
 				<div id="protest-column" class="column-div"></div>
-				<p id="protest-label" class="column-label">Protest</p>
+				<p id="protest-label" class="column-label">protest</p>
 			</div>
-			<div class="column-container" id="party-container">
+			<div class="column-container" id="party-container" name="party">
 				<div id="party-column" class="column-div"></div>
-				<p id="party-label" class="column-label">Work with party</p>
+				<p id="party-label" class="column-label">party</p>
 			</div>
-			<div class="column-container" id="boycott-container">
+			<div class="column-container" id="boycott-container" name="boycott">
 				<div id="boycott-column" class="column-div"></div>
-				<p id="boycott-label" class="column-label">Boycott</p>
+				<p id="boycott-label" class="column-label">boycott</p>
 			</div>
+			<div id="x-axis"></div>
+			<div id="color-legend"></div>
+<!-- 			<p id="top-axis-label">10</p>
+			<p id="bottom-axis-label">1</p> -->
 		</div>
 	</div>
 	
