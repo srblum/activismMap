@@ -1,6 +1,6 @@
 var ageIndex, 
 	interestIndex,
-	selectedCountry = "Canada", 
+	selectedCountry = "canada", 
 	selectedVariable = "satisfaction";
 
 var format = d3.format(",");
@@ -24,28 +24,51 @@ var projection = d3.geoNaturalEarth1()
 
 var path = d3.geoPath().projection(projection);
 
+//For the most part, country names in the data correspond to the NAME_LONG attribute of the GeoJSON file
+//The exceptions are stored in the object below
+var sortNames2DataNames = {
+	"united states":"united states of america",
+	"swaziland":"eswatini",
+	"czechia":"czech republic",
+	"taiwan, china":"taiwan",
+	"palestine (west bank and gaza)":"west bank and gaza"
+} 
+
 queue()
 .defer(d3.json, "world_countries.json")
 .defer(d3.tsv, "world_population.tsv")
-.defer(d3.tsv, "survey_data2.txt") //exported as tsv from excel and 
+.defer(d3.tsv, "survey_data2.txt") 	//exported as tsv from excel and 
 									//converted to utf8 using  iconv -f LATIN1 -t UTF8 survey_data.txt >> survey_data2.txt
 .await(ready);
 
-//For the most part, country names in the data correspond to the NAME_LONG attribute of the GeoJSON file
-//The exceptions are stored in the object below
-var countryNameTranslations = {
-	"United States":"United States of America",
-	"Swaziland":"eSwatini"
-} 
-
-var dataByCountry = {};
-
 function ready(error, world, population, data) {
-	var populationById = {};
+	var populationById = {},
+		dataByCountry = {},
+		countryNames2Population = {},
+		countrySuggestions = [],
+		totalPopulation = 0,
+		globals = [[{},{},{}],
+					[{},{},{}],
+					[{},{},{}]];	//This will contain population-adjusted averages for each of the nine sectors
 	
+	dataByCountry['globals'] = globals;
 
-	population.forEach(function(d) { populationById[d.id] = +d.population; });
+	//store populations populationById
+	population.forEach(function(d) { 
+		totalPopulation += +d.population;
+		populationById[d.id] = +d.population; 
+	});
+	//pass the populations to the world object
 	world.features.forEach(function(d) { d.population = populationById[d.properties.ADM0_A3] });
+	//keep track of the correspondence between country codes and population in countryNames2Population
+	world.features.forEach(function(d) {
+		var name = d.properties.NAME_SORT;
+		name = name.toLowerCase();
+		if(sortNames2DataNames.hasOwnProperty(name)){
+			name = sortNames2DataNames[name];
+		}
+		countryNames2Population[name] = populationById[d.properties.ADM0_A3];
+	});
 
 	//Translation functions from age and interest sectors in original data to the matrix indices in dataByCountry
 	function getAgeIndex(age){
@@ -69,18 +92,22 @@ function ready(error, world, population, data) {
 
 	data.forEach(function(d){
 		//Fix a few country names to ensure they correspond with names in GeoJSON
-		var country = d.Country;
-		if(countryNameTranslations.hasOwnProperty(country)){
-			country = countryNameTranslations[country];
+		var country = d.Country.toLowerCase();
+		if(sortNames2DataNames.hasOwnProperty(country)){
+			country = sortNames2DataNames[country];
 		}
+		countrySuggestions.push(country);
 		//Initialize with 3x3 matrix (age x interest)
 		if(!dataByCountry.hasOwnProperty(country)){
 			dataByCountry[country] =	[[{},{},{}],
 										[{},{},{}],
 										[{},{},{}]];
 		}
+		var ai = getAgeIndex(d["Age Group"]),
+			ii = getInterestIndex(d["Interest in Politics"]);
+
 		//Fill appropriate cell with named data
-		var cell = dataByCountry[country][getAgeIndex(d["Age Group"])][getInterestIndex(d["Interest in Politics"])];
+		var cell = dataByCountry[country][ai][ii];
 		cell["satisfaction"] = +d["Satisfied with Government"];
 		cell["voice"] = +d["Feel like have a voice"];
 		cell["democracy"] = +d["Democracy Preferred"];
@@ -89,8 +116,33 @@ function ready(error, world, population, data) {
 		cell["party"] = +d["Like work with political parties"];
 		cell["boycott"] = +d["Like to boycott"];
 		cell["campaign"] = +d["Like to campaign for politician"];
+
+		var global_cell = globals[ai][ii];
+		if(countryNames2Population.hasOwnProperty(country) && countryNames2Population[country]!==undefined){
+			for(var prop in cell){
+				if(cell.hasOwnProperty(prop)){
+					//Add value*population to the globals
+					if(!global_cell.hasOwnProperty(prop)){
+						global_cell[prop] = cell[prop] * countryNames2Population[country];
+					}else{
+						global_cell[prop] += cell[prop] * countryNames2Population[country];
+					}
+				}
+			}
+		}
 	});
 
+	//Divide global values by total population to obtain weighted average
+	for(var i=0;i<3;i++){
+		for(var j=0;j<3;j++){
+			var cell = globals[i][j];
+			for(var prop in cell){
+				if(cell.hasOwnProperty(prop)){
+					cell[prop] /= totalPopulation;
+				}
+			}
+		}
+	}
 
 	var color = d3.scaleThreshold()
 	    .domain(d3.range(1, 10))
@@ -103,12 +155,14 @@ function ready(error, world, population, data) {
 		.data(world.features)
 	.enter().append("path")
 		.attr("d", path)
+		.each(function(d){
+			d.properties.NAME_SORT = d.properties.NAME_SORT.toLowerCase();
+		})
 		.style("fill", getCountryColor)
-		.classed("selected",d => d.properties.NAME_SORT==="Canada" ? true : false)
+		.classed("selected",d => d.properties.NAME_SORT==="canada" ? true : false)
 		.style('stroke', 'black')
-		.style('stroke-width', 1)
+		.style('stroke-width', 0.2)
 		.style("opacity",0.8)
-		.style('stroke-width', 0.1)
 		.on('mouseover',function(d){
 			tip.show(d);
 		})
@@ -123,7 +177,7 @@ function ready(error, world, population, data) {
 				updateColumns();
 				updateInfo();
 			}
-		})
+		});
 
 	d3.select("#color-legend").selectAll("div")
 	  .data(color.range().reverse())
@@ -144,7 +198,8 @@ function ready(error, world, population, data) {
 		updateColumns();
 		updateInfo();
 		countries.transition().duration(500).style("fill",getCountryColor);
-	})
+	});
+
 	$("#age-div button").on("click",function(){
 		if($(this).hasClass('selected')){
 			$("#age-div button").removeClass("selected");
@@ -157,7 +212,7 @@ function ready(error, world, population, data) {
 		updateColumns();
 		updateInfo();
 		countries.transition().duration(500).style("fill",getCountryColor);
-	})
+	});
 
 	//When a new variable is selected, update the map colors
 	$(".column-container").on("click",function(){
@@ -166,9 +221,9 @@ function ready(error, world, population, data) {
 		$(this).addClass("selected");
 		updateColumns();
 		countries.transition().duration(500).style("fill",getCountryColor);
-	})
+	});
 
-	function getCountryColor(d){		
+	function getCountryColor(d){
 		var country = d.properties.NAME_SORT;
 		if(dataByCountry.hasOwnProperty(country)){
 			var cell = getCell(country);
@@ -181,27 +236,35 @@ function ready(error, world, population, data) {
 
 	//Update columns based on data from selected country, age, and interest
 	function updateColumns(){
-		var cell = getCell();
+		var cell = getCell(),
+			global_cell = getCell('globals');
 		//Update all columns
-		updateColumn(d3.select("#satisfaction-container"),cell["satisfaction"]);
-		updateColumn(d3.select("#voice-container"),cell["voice"]);
-		updateColumn(d3.select("#demo-container"),cell["democracy"]);
-		updateColumn(d3.select("#other-container"),cell["other"]);
-		updateColumn(d3.select("#protest-container"),cell["protest"]);
-		updateColumn(d3.select("#boycott-container"),cell["boycott"]);
-		updateColumn(d3.select("#party-container"),cell["party"]);
-		updateColumn(d3.select("#campaign-container"),cell["campaign"]);
+		updateColumn(d3.select("#satisfaction-container"),cell["satisfaction"], global_cell["satisfaction"]);
+		updateColumn(d3.select("#voice-container"),cell["voice"], global_cell["voice"]);
+		updateColumn(d3.select("#demo-container"),cell["democracy"], global_cell["democracy"]);
+		updateColumn(d3.select("#other-container"),cell["other"], global_cell["other"]);
+		updateColumn(d3.select("#protest-container"),cell["protest"], global_cell["protest"]);
+		updateColumn(d3.select("#boycott-container"),cell["boycott"], global_cell["boycott"]);
+		updateColumn(d3.select("#party-container"),cell["party"], global_cell["party"]);
+		updateColumn(d3.select("#campaign-container"),cell["campaign"], global_cell["campaign"]);
+
+		
+		
 	}
 
 	var scaleY = d3.scaleLinear().domain([1,10]).range([15,150]);
 
 	// animate a column to the appropriate value
-	function updateColumn(container, value){
+	function updateColumn(container, value, global_value){
 		container.select(".column-div").transition()
 				.duration(500)
 				.style("height",scaleY(value)+"px")
 				.style("background-color",container.classed('selected') ? "orange" : color(value));
+		container.select("img").transition()
+				.duration(500)
+				.style("bottom",scaleY(global_value)+25+"px");
 	}
+
 
 	function updateInfo(){
 		$("#column-info").html(`${selectedCountry} <span>${ageIndex!==undefined || interestIndex!==undefined ? "(" : ""}${ageIndex!==undefined ? "age ":""} \
@@ -253,20 +316,86 @@ function ready(error, world, population, data) {
 		return cell;
 	}
 
+	var f = d3.format(".1f");
+
 	// Set tooltips
 	var tip = d3.tip()
 			.attr('class', 'd3-tip')
 			.offset([-10, 0])
 			.html(function(d) {
-				var f = d3.format(".1f");
-				var country = d.properties.NAME_SORT;
-				var value = getCell(country)[selectedVariable]
-				return "<strong>Country: </strong><span class='details'>" + country + "<br></span>"
+				var country, country_readable, value;
+					country = d.properties.NAME_SORT;
+					country_readable = d.properties.NAME
+				if(dataByCountry.hasOwnProperty(country)){
+					value = getCell(country)[selectedVariable]
+					if(value % 1 !== 0){
+						value = f(value)
+					}
+				}else{
+					value = " not surveyed";
+				}
+				return "<strong>Country: </strong><span class='details'>" + country_readable + "<br></span>"
 				 + "<strong>"+selectedVariable[0].toUpperCase()+selectedVariable.slice(1)+
-				 ": </strong><span class='details'>" + (dataByCountry.hasOwnProperty(country) 
-				 	? (value % 1 === 0 ? value : f(value)) : 
-				 	"not surveyed") +"</span>";
+				 ": </strong><span class='details'>" + value +"</span>";
 			})
+
+	function getCountriesStartingWith(prefix){
+		var suggestions = [];
+		var lenP = prefix.length;
+		var k, subK;
+		for(var i = 0; i<countrySuggestions.length; i++){
+			k = countrySuggestions[i].toLowerCase();
+			subK = k.slice(0,lenP)
+			if(subK > prefix){
+				break;
+			}else if(subK === prefix){
+				suggestions.push(k);
+			}
+		}
+		return suggestions;
+	}
+
+	// JQUERY UI AUTOCOMPLETE WIDGET
+	$('#search-query').autocomplete({
+		source: function(request, response){
+			var results = getCountriesStartingWith(request.term.toLowerCase());
+	        response(results.slice(0, 6));
+		}
+	});
+
+	function selectCountryByName(country){
+		if(sortNames2DataNames.hasOwnProperty(country)){
+			country = sortNames2DataNames[country];
+		}
+		if(countrySuggestions.indexOf(country)>-1){
+			//Update map selection, columns, and info
+			$("#d3-container path").removeClass("selected");
+			countries.each(function(d){
+				if(d.properties.NAME_SORT.toLowerCase()===country){
+					$(this).addClass("selected");
+				}
+			})
+			selectedCountry = country;
+			updateInfo();
+			updateColumns();
+		}else{
+			console.log(country);
+		}
+	}
+
+	//Select country on Enter or pressing button
+	$("#search-query").on("keyup",function(e){
+		if(e.key === "Enter"){
+			selectCountryByName($(this).val());
+		}
+	})
+
+	//Select country on Enter or pressing button
+	$("#search-button").on("click",function(e){
+		if(e.key === "Enter"){
+			selectCountryByName($("#search-query").val());
+		}
+	})
 
 	updateColumns();
 	updateInfo();

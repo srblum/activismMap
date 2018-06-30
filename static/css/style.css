@@ -1,3 +1,7 @@
+p{
+	cursor:default;
+}
+
 #d3-container{
 	position:relative;
 	width:1000px;
@@ -5,10 +9,10 @@
 	padding:0px;
 }
 	#age-div{
-		left:15%;
+		left:10%;
 	}
 	#interest-div{
-		right:15%;
+		right:28%;
 	}
 	.button-div{
 		position:absolute;
@@ -28,6 +32,10 @@
 			font-size:18px;
 			font-weight:600;
 			opacity:0.9;
+			cursor:pointer;
+		}
+		.button-div button:focus {
+			outline:0;
 		}
 		.button-div button.selected{
 			background-color:orange;
@@ -38,6 +46,15 @@
 			font-size:20px;
 			margin:5px;
 		}
+
+	#search-query{
+		position:absolute;
+		top:33px;
+		right:0%;
+		height:30px;
+		width:200px;
+		font-size:18px;
+	}
 	
 	#variable-select{
 		position:absolute;
@@ -48,15 +65,14 @@
 	#chart-container{
 		position:relative;
 		height:220px;
-		left:230px;
+		left:400px;
 		top:-70px;
-		width:1000px;
+		width:510px;
 	}
 
 		#chart-container #column-info{
 			position:absolute;
 			top:-50px;
-			left:0px;
 			width:100%;
 			text-align:center;
 			font-size:20px;
@@ -69,8 +85,8 @@
 		}
 		#x-axis{
 			position:absolute;
-			width:55%;
-			left:20%;
+			width:500px;
+			left:8px;
 			height:1px;
 			border-bottom:1px solid grey;
 			bottom:70px;
@@ -78,7 +94,7 @@
 		#color-legend{
 			position:absolute;
 			bottom:70px;
-			left:19%;
+			left:0px;
 			width:8px;
 			height:150px;
 			opacity:0.8;
@@ -106,10 +122,11 @@
 		}
 		#chart-container .column-container{
 			display:inline-block;
-			width:auto;
+			width:45px;
 			height:110px;
 			position:relative;
 			top:70px;
+			margin:0px;
 		}
 			#chart-container .column-container .column-div{
 				position:absolute;
@@ -117,10 +134,11 @@
 				height:0px;
 				border:1px solid black;
 				bottom:30px;
-				left:10px;
+				left:12px;
 				opacity:0.8;
-				background-color:lightslategrey;
 				border-bottom:none;
+				cursor:pointer;
+				margin:0px;
 			}
 			#chart-container .column-container .column-label{
 				font-size:12px;
@@ -137,6 +155,42 @@
 					color:orange;
 					font-weight:bold;
 				}
+			#chart-container .column-container img{
+				position:absolute;
+				width:10px;
+				height:10px;
+				left:20px;
+				bottom:150px;
+				display:block !important;
+				/*opacity:0.8;*/
+			}
+
+		#global-legend{
+			position:relative;
+			left:510px;
+			bottom:30px;
+			width:100px;
+			height:50px;
+		}
+			#global-legend-icon{
+				position:absolute;
+				top:0px;
+				left:0px;
+				width:10px;
+				height:10px;
+			}
+			#global-legend-label{
+				position:absolute;
+				top:-2px;
+				left:15px;
+				width:200px;
+				font-size:12px;
+				line-height:12px;
+				color:grey;
+				opacity:0.8;
+				margin:0px;
+				padding:0px;
+			}
 
 		#chart-container .heading-label{
 			color:grey;
@@ -145,44 +199,48 @@
 			font-weight:bold;
 		}
 		#type-label{
-			left:42%;
+			left:205px;
 			bottom:26px;
 		}
 		#participation-label{
-			left:62%;
+			left:365px;
 			bottom:26px;
 		}
 
 		#satisfaction-container{
-			left:20%;
+			left:30px;
 		}
 
 		#voice-container{
-			left:30.5%;
+			left:60px;
 		}
 
 		#demo-container{
-			left:40.5%;
+			left:100px;
 		}
 		#other-container{
-			left:44.5%;
+			left:95px;
 		}
 
 		#campaign-container{
-			left:56%;
-		}
-		#party-container{
-			left:60%;
+			left:120px;
 		}
 		#protest-container{
-			left:64%;
+			left:115px;
+		}
+		#party-container{
+			left:110px;
 		}
 		#boycott-container{
-			left:68%;
+			left:105px;
 		}
 
 #d3-container svg path.selected{
 	stroke-width:1 !important;
+}
+
+#d3-container svg path{
+	cursor:pointer;
 }
 
 .names {

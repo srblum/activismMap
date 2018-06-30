@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <head>
 	<meta charset="utf-8">
+	<!-- jQuery UI CSS (autocomplete + sortable subset) -->
+	<link href="static/css/jquery-ui.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="static/css/style.css?v=1">
 </head>
 
@@ -18,45 +20,66 @@
 			<button name=1>Medium</button>
 			<button name=2>High</button>
 		</div>
+		<input id = "search-query" type="text" placeholder="Search for a country...">
 		<svg></svg>
 		<div id="chart-container">
 			<p id="column-info"></p>
 			<div class="column-container selected" id="satisfaction-container" name="satisfaction">
 				<div id="satisfaction-column" class="column-div"></div>
 				<p id="satisfaction-label" class="column-label"> satisfaction</p>
+				<img src="static/img/icon-thick.png" alt="" style="display:none;">
+				<div class="globe-stem" style="display:none;"></div>
 			</div>
 			<div class="column-container" id="voice-container" name="voice">
 				<div id="voice-column" class="column-div"></div>
 				<p id="voice-label" class="column-label"> voice</p>
+				<img src="static/img/icon-thick.png" alt="" style="display:none;">
+				<div class="globe-stem" style="display:none;"></div>
 			</div>
 			<p id="type-label" class="heading-label">gov. preferred</p>
 			<div class="column-container" id="demo-container" name="democracy">
 				<div id="demo-column" class="column-div"></div>
 				<p id="demo-label" class="column-label">democracy</p>
+				<img src="static/img/icon-thick.png" alt="" style="display:none;">
+				<div class="globe-stem" style="display:none;"></div>
 			</div>
 			<div class="column-container" id="other-container" name="other">
 				<div id="other-column" class="column-div"></div>
 				<p id="other-label" class="column-label">other</p>
+				<img src="static/img/icon-thick.png" alt="" style="display:none;">
+				<div class="globe-stem" style="display:none;"></div>
 			</div>
 			<p id="participation-label" class="heading-label">I would like to...</p>
 			<div class="column-container" id="campaign-container" name="campaign">
 				<div id="campaign-column" class="column-div"></div>
 				<p id="campaign-label" class="column-label">campaign</p>
+				<img src="static/img/icon-thick.png" alt="" style="display:none;">
+				<div class="globe-stem" style="display:none;"></div>
 			</div>
 			<div class="column-container" id="protest-container" name="protest">
 				<div id="protest-column" class="column-div"></div>
 				<p id="protest-label" class="column-label">protest</p>
+				<img src="static/img/icon-thick.png" alt="" style="display:none;">
+				<div class="globe-stem" style="display:none;"></div>
 			</div>
 			<div class="column-container" id="party-container" name="party">
 				<div id="party-column" class="column-div"></div>
 				<p id="party-label" class="column-label">party</p>
+				<img src="static/img/icon-thick.png" alt="" style="display:none;">
+				<div class="globe-stem" style="display:none;"></div>
 			</div>
 			<div class="column-container" id="boycott-container" name="boycott">
 				<div id="boycott-column" class="column-div"></div>
 				<p id="boycott-label" class="column-label">boycott</p>
+				<img src="static/img/icon-thick.png" alt="" style="display:none;">
+				<div class="globe-stem" style="display:none;"></div>
 			</div>
 			<div id="x-axis"></div>
 			<div id="color-legend"></div>
+			<div id="global-legend">
+				<p id="global-legend-label">global average (population adjusted)</p>
+				<img id="global-legend-icon" src="static/img/icon-thick.png">
+			</div>
 <!-- 			<p id="top-axis-label">10</p>
 			<p id="bottom-axis-label">1</p> -->
 		</div>
@@ -67,6 +90,8 @@
 	<script src="static/js/queue.v1.min.js"></script>
 	<script src="d3-tip.js"></script>
 	<script src="static/js/jquery-1.12.4.min.js"></script>
+	<!-- jQuery UI (autocomplete + sortable subset)-->
+	<script src="static/js/jquery-ui.min.js"></script>
 	<script src="static/js/main.js"></script>
 </body>
 </html>
