@@ -4,15 +4,11 @@ p{
 
 #d3-container{
 	position:relative;
-	width:1000px;
-	height:800px;
-	padding:0px;
+	max-width:1140px;
 }
-	#age-div{
-		left:10%;
-	}
-	#interest-div{
-		right:28%;
+	#input-container{
+		position:relative;
+		height:75px;
 	}
 	.button-div{
 		position:absolute;
@@ -21,31 +17,42 @@ p{
 		margin:0px;
 		padding:0px;
 	}
-		.button-div button{
-			margin: 0px;
-			display: inline-block;
-			box-shadow: 0 1px 1px 0 rgba(0,0,0,0.25);
-			color: #FFFFFF;
-			padding: 6px 20px 6px;
-			border-radius: 2px;
-			background: rgb(66, 146, 198);
-			font-size:18px;
-			font-weight:600;
-			opacity:0.9;
-			cursor:pointer;
-		}
-		.button-div button:focus {
-			outline:0;
-		}
-		.button-div button.selected{
-			background-color:orange;
-			opacity:0.95;
-		}
-		.button-div p{
-			text-align:center;
-			font-size:20px;
-			margin:5px;
-		}
+	#age-div{
+		left:10%;
+	}
+	#interest-div{
+		right:28%;
+	}
+		 .button-div-inner{
+		 	position:relative;
+		 	height:100%;
+		 }
+			.button-div button{
+				margin: 0px;
+				display: inline-block;
+				box-shadow: 0 1px 1px 0 rgba(0,0,0,0.25);
+				color: #FFFFFF;
+
+				padding: 6px 20px 6px;
+				border-radius: 2px;
+				background: rgb(66, 146, 198);
+				font-size:18px;
+				font-weight:600;
+				opacity:0.9;
+				cursor:pointer;
+			}
+			.button-div button:focus {
+				outline:0;
+			}
+			.button-div button.selected{
+				background-color:orange;
+				opacity:0.95;
+			}
+			.button-div p{
+				text-align:center;
+				font-size:20px;
+				margin:5px;
+			}
 
 	#search-query{
 		position:absolute;
@@ -63,177 +70,186 @@ p{
 	}
 
 	#chart-container{
-		position:relative;
+		position:absolute;
 		height:220px;
-		left:400px;
-		top:-70px;
-		width:510px;
+		left:32%;
+		top:75%;
+		width:55%;
 	}
-
-		#chart-container #column-info{
-			position:absolute;
-			top:-50px;
-			width:100%;
-			text-align:center;
-			font-size:20px;
-			font-weight:bold;
-			color:grey;
-			opacity:0.95;
-		}
-		#column-info span{
-			font-size: 16px;
-		}
-		#x-axis{
-			position:absolute;
-			width:500px;
-			left:8px;
-			height:1px;
-			border-bottom:1px solid grey;
-			bottom:70px;
-		}
-		#color-legend{
-			position:absolute;
-			bottom:70px;
-			left:0px;
-			width:8px;
-			height:150px;
-			opacity:0.8;
-			border-right:1px solid black;
-		}
-			#color-legend div{
-				margin:0px;
-				padding:0px;
-				height:15px;
-				width:8px;
-			}
-		#top-axis-label{
-			position:absolute;
-			bottom:195px;
-			font-size:10px;
-			opacity:0.7;
-			left:17%;
-		}
-		#bottom-axis-label{
-			position:absolute;
-			bottom:58px;
-			font-size:10px;
-			opacity:0.7;
-			left:18%;
-		}
-		#chart-container .column-container{
-			display:inline-block;
-			width:45px;
-			height:110px;
+		#chart-container-inner{
 			position:relative;
-			top:70px;
-			margin:0px;
+			height:100%;
+			height:100%;
 		}
-			#chart-container .column-container .column-div{
+			#chart-container #column-info{
 				position:absolute;
-				width:25px;
-				height:0px;
-				border:1px solid black;
-				bottom:30px;
-				left:12px;
-				opacity:0.8;
-				border-bottom:none;
-				cursor:pointer;
-				margin:0px;
-			}
-			#chart-container .column-container .column-label{
-				font-size:12px;
-				padding:0px;
-				margin:0px;
-				position:absolute;
-				color:grey;
-				top:80px;
-				width:50px;
+				top:-50px;
+				width:100%;
 				text-align:center;
-				line-height:12px;
+				font-size:20px;
+				font-weight:bold;
+				color:grey;
+				opacity:0.95;
 			}
-				#chart-container .column-container.selected .column-label{
-					color:orange;
+			#column-info span{
+				font-size: 16px;
+			}
+			#x-axis{
+				position:absolute;
+				width:99%;
+				left:1%;
+				height:1px;
+				border-bottom:1px solid grey;
+				bottom:32%;
+			}
+			#color-legend{
+				position:absolute;
+				bottom:32%;
+				left:0%;
+				width:8px;
+				height:68%;
+				opacity:0.8;
+				border-right:1px solid black;
+			}
+				#color-legend div{
+					margin:0px;
+					padding:0px;
+					height:10%;
+					width:100%;
+				}
+			#top-axis-label{
+				position:absolute;
+				bottom:195px;
+				font-size:10px;
+				opacity:0.7;
+				left:17%;
+			}
+			#bottom-axis-label{
+				position:absolute;
+				bottom:58px;
+				font-size:10px;
+				opacity:0.7;
+				left:18%;
+			}
+			#chart-container .column-container{
+				width:8%;
+				height:68%;
+				position:absolute;
+				bottom:32%;
+			}
+				#chart-container .column-container-inner{
+					position:relative;
+					width:100%;
+					height:100%;
+				}
+					#chart-container .column-container .column-div{
+						position:absolute;
+						width:50%;
+						min-width:22px;
+						height:0px;
+						border:1px solid black;
+						bottom:0px;
+						left:12px;
+						opacity:0.8;
+						border-bottom:none;
+						cursor:pointer;red
+					}
+					#chart-container .column-container .column-label{
+						font-size:12px;
+						padding:0px;
+						margin:0px;
+						position:absolute;
+						color:grey;
+						bottom:-8%;
+						width:50px;
+						text-align:center;
+						line-height:12px;
+					}
+						#chart-container .column-container.selected .column-label{
+							color:orange;
+							font-weight:bold;
+						}
+					#chart-container .column-container img{
+						position:absolute;
+						width:10px;
+						height:10px;
+						left:20px;
+						bottom:0%;
+						display:block !important;
+					}
+
+				#global-legend{
+					position:absolute;
+					left:105%;
+					bottom:40%;
+					width:100px;
+					height:50px;
+				}
+					#global-legend-inner{
+						position:relative;
+					}
+						#global-legend-icon{
+							position:absolute;
+							top:0px;
+							left:0px;
+							width:10px;
+							height:10px;
+						}
+						#global-legend-label{
+							position:absolute;
+							top:-2px;
+							left:15px;
+							width:100px;
+							font-size:12px;
+							line-height:12px;
+							color:grey;
+							opacity:0.8;
+							margin:0px;
+							padding:0px;
+						}
+
+				#chart-container .heading-label{
+					color:grey;
+					font-size:12px;
+					position:absolute;
 					font-weight:bold;
 				}
-			#chart-container .column-container img{
-				position:absolute;
-				width:10px;
-				height:10px;
-				left:20px;
-				bottom:25px;
-				display:block !important;
-				/*opacity:0.8;*/
-			}
+				#type-label{
+					left:37%;
+					bottom:15%;
+				}
+				#participation-label{
+					left:74%;
+					bottom:15%;
+				}
 
-		#global-legend{
-			position:relative;
-			left:510px;
-			bottom:30px;
-			width:100px;
-			height:50px;
-		}
-			#global-legend-icon{
-				position:absolute;
-				top:0px;
-				left:0px;
-				width:10px;
-				height:10px;
-			}
-			#global-legend-label{
-				position:absolute;
-				top:-2px;
-				left:15px;
-				width:200px;
-				font-size:12px;
-				line-height:12px;
-				color:grey;
-				opacity:0.8;
-				margin:0px;
-				padding:0px;
-			}
+				#satisfaction-container{
+					left:3%;
+				}
 
-		#chart-container .heading-label{
-			color:grey;
-			font-size:12px;
-			position:absolute;
-			font-weight:bold;
-		}
-		#type-label{
-			left:205px;
-			bottom:26px;
-		}
-		#participation-label{
-			left:365px;
-			bottom:26px;
-		}
+				#voice-container{
+					left:18%;
+				}
 
-		#satisfaction-container{
-			left:30px;
-		}
+				#demo-container{
+					left:33%;
+				}
+				#other-container{
+					left:45%;
+				}
 
-		#voice-container{
-			left:60px;
-		}
-
-		#demo-container{
-			left:100px;
-		}
-		#other-container{
-			left:95px;
-		}
-
-		#campaign-container{
-			left:120px;
-		}
-		#protest-container{
-			left:115px;
-		}
-		#party-container{
-			left:110px;
-		}
-		#boycott-container{
-			left:105px;
-		}
+				#campaign-container{
+					left:62%;
+				}
+				#protest-container{
+					left:73%;
+				}
+				#party-container{
+					left:83%;
+				}
+				#boycott-container{
+					left:93%;
+				}
 
 #d3-container svg path.selected{
 	stroke-width:1 !important;
@@ -310,4 +326,98 @@ left: 100%;
 
 .details{
 color:white;
+}
+
+
+/*stack the buttons and search box vertically at a certain point*/
+
+@media screen and (max-width: 890px) {
+	/* start of large tablet styles */
+	#input-container{
+		height:150px;
+	}
+	.button-div{
+		width:400px;
+		left:10%;
+	}
+	#age-div{
+		top:0px;
+	}
+	#interest-div{
+		top:70px;
+	}
+
+	#chart-container{
+		position:relative;
+		height:50%;
+		left:10%;
+		top:0%;
+		width:80%;
+	}
+	#global-legend{
+		left:70%;
+		bottom:90%;
+	}
+	#chart-container #column-info{
+		top:75%;
+	}
+}
+
+@media screen and (max-width: 720px) {
+	#chart-container{
+		height:60%;
+		width:90%;
+		left:5%;
+	}
+
+	#input-container{
+		height:190px;
+	}
+		.button-div{
+			width:90%;
+			max-width:600px;
+			left:5%;
+		}
+		#age-div{
+			left:5%;
+		}
+		#interest-div{
+			right:5%;
+		}
+			.button-div button{
+				display: inline-block;
+				box-shadow: 0 1px 1px 0 rgba(0,0,0,0.25);
+				color: #FFFFFF;
+				width:24%;
+				font-size:16px;
+				padding:0px;
+				margin:0% 1%;
+				height:35px;
+			}
+
+			.button-div button[name="0"]{
+				margin-left:12%;
+			}
+
+		#search-query{
+			position:absolute;
+			top:150px;
+			left:25%;
+			height:30px;
+			width:50%;
+			font-size:18px;
+		}
+
+	#chart-container{
+		height:70%;
+		width:94%;
+		left:3%;
+	}
+	#global-legend-label{
+		width:120px;
+		font-size:10px;
+	}
+	#chart-container .column-container .column-label{
+		font-size:11px;
+	}
 }

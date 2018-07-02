@@ -3,85 +3,101 @@
 	<meta charset="utf-8">
 	<!-- jQuery UI CSS (autocomplete + sortable subset) -->
 	<link href="static/css/jquery-ui.min.css" rel="stylesheet">
-	<link rel="stylesheet" href="static/css/style.css?v=2">
+	<link rel="stylesheet" href="static/css/style.css?v=3">
 </head>
 
 <body>
 	<div id="d3-container">
-		<div id="age-div" class="button-div">
-			<p id="age-label" class="column-label">How old are you?</p>
-			<button name=0>&lt;29</button>
-			<button name=1>29-38</button>
-			<button name=2>&gt;38</button>
-		</div>
-		<div id="interest-div" class="button-div">
-			<p id="interest-label" class="column-label">How interested are you in politics?</p>
-			<button name=0>Low</button>
-			<button name=1>Medium</button>
-			<button name=2>High</button>
+		<div id="input-container">
+			<div id="age-div" class="button-div">
+				<div class="button-div-inner">
+					<p id="age-label" class="column-label">How old are you?</p>
+					<button name=0>&lt;29</button>
+					<button name=1>29-38</button>
+					<button name=2>&gt;38</button>
+				</div>
+			</div>
+			<div id="interest-div" class="button-div">
+				<div class="button-div-inner">
+					<p id="interest-label" class="column-label">How interested are you in politics?</p>
+					<button name=0>Low</button>
+					<button name=1>Medium</button>
+					<button name=2>High</button>
+				</div>
+			</div>
 		</div>
 		<input id = "search-query" type="text" placeholder="Search for a country...">
 		<svg></svg>
 		<div id="chart-container">
-			<p id="column-info"></p>
-			<div class="column-container selected" id="satisfaction-container" name="satisfaction">
-				<div id="satisfaction-column" class="column-div"></div>
-				<p id="satisfaction-label" class="column-label"> satisfaction</p>
-				<img src="static/img/icon-thick.png" alt="" style="display:none;">
-				<div class="globe-stem" style="display:none;"></div>
+			<div id="chart-container-inner">
+				<p id="column-info"></p>
+				<div class="column-container selected" id="satisfaction-container" name="satisfaction">
+					<div class="column-container-inner">
+						<div id="satisfaction-column" class="column-div"></div>
+						<p id="satisfaction-label" class="column-label"> satisfaction</p>
+						<img src="static/img/icon-thick.png" alt="" style="display:none;">
+					</div>
+				</div>
+				<div class="column-container" id="voice-container" name="voice">
+					<div class="column-container-inner">		
+						<div id="voice-column" class="column-div"></div>
+						<p id="voice-label" class="column-label"> voice</p>
+						<img src="static/img/icon-thick.png" alt="" style="display:none;">
+					</div>
+				</div>
+				<p id="type-label" class="heading-label">gov. preferred</p>
+				<div class="column-container" id="demo-container" name="democracy">
+					<div class="column-container-inner">		
+						<div id="demo-column" class="column-div"></div>
+						<p id="demo-label" class="column-label">democracy</p>
+						<img src="static/img/icon-thick.png" alt="" style="display:none;">
+					</div>
+				</div>
+				<div class="column-container" id="other-container" name="other">
+					<div class="column-container-inner">		
+						<div id="other-column" class="column-div"></div>
+						<p id="other-label" class="column-label">other</p>
+						<img src="static/img/icon-thick.png" alt="" style="display:none;">
+					</div>
+				</div>
+				<p id="participation-label" class="heading-label">I would like to...</p>
+				<div class="column-container" id="campaign-container" name="campaign">
+					<div class="column-container-inner">	
+						<div id="campaign-column" class="column-div"></div>
+						<p id="campaign-label" class="column-label">campaign</p>
+						<img src="static/img/icon-thick.png" alt="" style="display:none;">
+					</div>
+				</div>
+				<div class="column-container" id="protest-container" name="protest">
+					<div class="column-container-inner">		
+						<div id="protest-column" class="column-div"></div>
+						<p id="protest-label" class="column-label">protest</p>
+						<img src="static/img/icon-thick.png" alt="" style="display:none;">
+					</div>
+				</div>
+				<div class="column-container" id="party-container" name="party">
+					<div class="column-container-inner">		
+						<div id="party-column" class="column-div"></div>
+						<p id="party-label" class="column-label">party</p>
+						<img src="static/img/icon-thick.png" alt="" style="display:none;">
+					</div>
+				</div>
+				<div class="column-container" id="boycott-container" name="boycott">
+					<div class="column-container-inner">		
+						<div id="boycott-column" class="column-div"></div>
+						<p id="boycott-label" class="column-label">boycott</p>
+						<img src="static/img/icon-thick.png" alt="" style="display:none;">
+					</div>
+				</div>
+				<div id="x-axis"></div>
+				<div id="color-legend"></div>
+				<div id="global-legend">
+					<div id="global-legend-inner">
+						<p id="global-legend-label">global average <br>(population adjusted)</p>
+						<img id="global-legend-icon" src="static/img/icon-thick.png">
+					</div>
+				</div>
 			</div>
-			<div class="column-container" id="voice-container" name="voice">
-				<div id="voice-column" class="column-div"></div>
-				<p id="voice-label" class="column-label"> voice</p>
-				<img src="static/img/icon-thick.png" alt="" style="display:none;">
-				<div class="globe-stem" style="display:none;"></div>
-			</div>
-			<p id="type-label" class="heading-label">gov. preferred</p>
-			<div class="column-container" id="demo-container" name="democracy">
-				<div id="demo-column" class="column-div"></div>
-				<p id="demo-label" class="column-label">democracy</p>
-				<img src="static/img/icon-thick.png" alt="" style="display:none;">
-				<div class="globe-stem" style="display:none;"></div>
-			</div>
-			<div class="column-container" id="other-container" name="other">
-				<div id="other-column" class="column-div"></div>
-				<p id="other-label" class="column-label">other</p>
-				<img src="static/img/icon-thick.png" alt="" style="display:none;">
-				<div class="globe-stem" style="display:none;"></div>
-			</div>
-			<p id="participation-label" class="heading-label">I would like to...</p>
-			<div class="column-container" id="campaign-container" name="campaign">
-				<div id="campaign-column" class="column-div"></div>
-				<p id="campaign-label" class="column-label">campaign</p>
-				<img src="static/img/icon-thick.png" alt="" style="display:none;">
-				<div class="globe-stem" style="display:none;"></div>
-			</div>
-			<div class="column-container" id="protest-container" name="protest">
-				<div id="protest-column" class="column-div"></div>
-				<p id="protest-label" class="column-label">protest</p>
-				<img src="static/img/icon-thick.png" alt="" style="display:none;">
-				<div class="globe-stem" style="display:none;"></div>
-			</div>
-			<div class="column-container" id="party-container" name="party">
-				<div id="party-column" class="column-div"></div>
-				<p id="party-label" class="column-label">party</p>
-				<img src="static/img/icon-thick.png" alt="" style="display:none;">
-				<div class="globe-stem" style="display:none;"></div>
-			</div>
-			<div class="column-container" id="boycott-container" name="boycott">
-				<div id="boycott-column" class="column-div"></div>
-				<p id="boycott-label" class="column-label">boycott</p>
-				<img src="static/img/icon-thick.png" alt="" style="display:none;">
-				<div class="globe-stem" style="display:none;"></div>
-			</div>
-			<div id="x-axis"></div>
-			<div id="color-legend"></div>
-			<div id="global-legend">
-				<p id="global-legend-label">global average (population adjusted)</p>
-				<img id="global-legend-icon" src="static/img/icon-thick.png">
-			</div>
-<!-- 			<p id="top-axis-label">10</p>
-			<p id="bottom-axis-label">1</p> -->
 		</div>
 	</div>
 	
