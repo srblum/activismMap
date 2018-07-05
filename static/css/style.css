@@ -53,6 +53,7 @@ p{
 				font-size:20px;
 				margin:5px;
 				padding:0px;
+				white-space: nowrap
 			}
 
 	#search-query{
@@ -214,6 +215,7 @@ p{
 					font-size:12px;
 					position:absolute;
 					font-weight:bold;
+					white-space: nowrap
 				}
 				#type-label{
 					left:37%;
@@ -428,7 +430,8 @@ color:white;
 		left:1%;
 	}
 	#chart-container .heading-label{
-		font-size:11px;
+		font-size:10px;
+		padding:0px;
 	}
 	#type-label{
 		left:37%;
