@@ -52,6 +52,7 @@ p{
 				text-align:center;
 				font-size:20px;
 				margin:5px;
+				padding:0px;
 			}
 
 	#search-query{
@@ -364,12 +365,6 @@ color:white;
 }
 
 @media screen and (max-width: 720px) {
-	#chart-container{
-		height:60%;
-		width:90%;
-		left:5%;
-	}
-
 	#input-container{
 		height:190px;
 	}
@@ -419,5 +414,31 @@ color:white;
 	}
 	#chart-container .column-container .column-label{
 		font-size:11px;
+	}
+}
+
+@media screen and (max-width: 400px){
+	.button-div p{
+		font-size:18px;
+	}
+
+	#chart-container{
+		height:80%;
+		width:98%;
+		left:1%;
+	}
+	#chart-container .heading-label{
+		font-size:11px;
+	}
+	#type-label{
+		left:37%;
+		bottom:13%;
+	}
+	#participation-label{
+		left:74%;
+		bottom:13%;
+	}
+	#chart-container .column-container .column-label{
+		font-size:10px;
 	}
 }
